@@ -4,11 +4,10 @@
 3. Graph
 '''
 
-from re import I
 import numpy as np
 import scipy.optimize as opt
 import matplotlib.pyplot as plt
-import math
+
 
 '''
 sigma = 0.2
@@ -55,13 +54,12 @@ class data():
     def quantity(self, delA):
         UStart = self.Ufun(self.a, self.b, self.y)
         delY = opt.root(lambda delY: self.Ufun(self.a + delA, self.b, self.y - delY) - UStart, 3.11)
-
+        
         return delY
 
     def price(self, delA):
         delY = self.quantity(delA).x[0]
         ratio = delA / delY
-
 
         return ratio
 
@@ -95,6 +93,7 @@ Graph of incremental Y received for 1 unit increases in A.
 '''
 delA = [i for i in range(100)]
 difference = [(d.quantity(i).x[0]-d.quantity(i-1).x[0]) for i in range(100)]
+# difference = np.log10(np.array(difference))
 plt.plot(delA, difference)
 plt.ylim([0, 1])
 plt.xlim([0, 12])
@@ -109,9 +108,10 @@ Graph of price slippage
 '''
 delA = [i for i in range(100)]
 slippage = ([d.slippage(i) for i in range(100)])
+slippage = np.log10(np.array(slippage))
 plt.plot(delA, slippage)
-plt.xlim(0,30)
-plt.ylim(0, 100)
+plt.xlim(0,35)
+plt.ylim(0, 2.2)
 plt.xlabel('Amount of A being exchanged for Y')
 plt.ylabel('Price Slippage of Expected Price of Y versus Actual (%)')
 plt.show()
