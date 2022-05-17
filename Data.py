@@ -45,7 +45,7 @@ class data():
         self.a = a0
         self.b = b0
         self.y = y0
-
+      
     def Ufun(self, a, b, y):
         x = (a**(1-self.sigma) + b**(1-self.sigma))**(1/(1-self.sigma))
         U = x**(1-self.eta) + y**(1-self.eta)
@@ -53,7 +53,7 @@ class data():
 
     def quantity(self, delA):
         UStart = self.Ufun(self.a, self.b, self.y)
-        delY = opt.root(lambda delY: self.Ufun(self.a + delA, self.b, self.y - delY) - UStart, 3.11)
+        delY = opt.root(lambda delY: self.Ufun(self.a + delA, self.b, self.y - delY) - UStart, 3.41)
         
         return delY
 
@@ -66,6 +66,17 @@ class data():
     def slippage(self, delA):
         return (((self.price(delA) / self.price(1)) - 1) * 100)
 
+    # def update_a(self, delA):
+    #     self.a = self.start(self.a0) + ((1 + self.f) * delA)
+        
+    # def update_y(self, self.quantity(delA))
+    #     self.y0 = self.start(self.y0) - quantity(delA)
+ 
+    # def count(self, a0, b0, y0):
+    #     self.a0 = self.update_a(delA)
+    #     self.y0 = self.update_y(self.quantity(delA))
+
+
     # def limit(self, delA):
     #   y0 = self.y
     #   y0 = y0 - self.quantity(delA).x[0]
@@ -76,17 +87,21 @@ class data():
 
 
 d = data(.2, .8, 10, 10, 10)
+d = data(.2, .8, 10, 10, 1)
 UStart = d.Ufun(d.a, d.b, d.y)
+UStart
 # print(d.limit())
 # delY = d.quantity(3)
 # print(delY.x[0])
 # print(d.price(3))
-# d.quantity(2).x[0]
-# print(d.quantity(3).x[0])
+d.quantity(3).x[0]
+# print(d.quantity(3).x[0]), 0.56, 1.084
 # print(d.quantity(35).x[0])
 # print(d.slippage(3, 1))
 # print(d.slippage(5))
 # print((d.price(3)/d.price(1) - 1) * 100)
+
+d.price()
 
 '''
 Graph of incremental Y received for 1 unit increases in A.
@@ -94,6 +109,7 @@ Graph of incremental Y received for 1 unit increases in A.
 delA = [i for i in range(100)]
 difference = [(d.quantity(i).x[0]-d.quantity(i-1).x[0]) for i in range(100)]
 # difference = np.log10(np.array(difference))
+
 plt.plot(delA, difference)
 plt.ylim([0, 1])
 plt.xlim([0, 12])
@@ -126,14 +142,17 @@ and while the quantity of y decreases.
 slippage =np.array([d.slippage(i) for i in range(100)])
 price = np.array([d.price(i) for i in range(100)])
 delA = [i for i in range(100)]
-# price = np.log10(price)
+price = np.log10(price)
 slippage = np.log10(slippage)
-plt.plot(delA, slippage)
+plt.plot(price, slippage)
 plt.xlim(0,10)
 plt.ylim(0, 5)
-plt.xlabel('Quantity of A in LP')
-plt.ylabel('Price of A per Y, log10')
+plt.xlabel('Price Y in terms of A, log10')
+plt.ylabel('Slippage, log10')
 plt.show()
+
+
+
 
 # price = [d.price(i) for i in delA]
 # plt.plot(delA, price)
@@ -168,7 +187,7 @@ class data_ab():
     def slippage(self, delA):
         return ((self.price(delA) / self.price(1)) - 1) * 100
 
-b = data_ab(.2, .8, 10, 10, 10)
+b = data_ab(.1, .8, 10, 10, 10)
 UStart = b.Ufun(b.a, b.b, b.y)
 UStart
 
@@ -176,7 +195,7 @@ UStart
 # print(delB.x[0])
 # print(b.quantity(3).x[0])
 # print(b.quantity(35).x[0])
-print(b.slippage(5))
+print(b.slippage(2))
 print(b.price(3))
 b.quantity(2).x[0]
 
@@ -185,7 +204,7 @@ Graph of amount of b received per 1 unit increase in A
 '''
 
 delA = [i for i in range(100)]
-difference = [(b.quantity(i).x[0]-b.quantity(i-1).x[0]) for i in range(100)]
+difference = [(b.quantity(i).x[0] for i in range(100)]
 plt.plot(delA, difference)
 plt.ylim([0, 2])
 plt.xlim([0, 11])
@@ -202,15 +221,15 @@ and while the quantity of b decreases.
 '''
 price = np.array([b.price(i) for i in range(100)])
 delA = [i for i in range(100)]
+quant = [b.quantity(i).x[0] for i in range(100)]
 slippage = np.array([b.slippage(i) for i in range(100)])
-slippage = np.log10(slippage)
-plt.plot(delA, slippage)
-plt.xlim(0,10)
-plt.ylim(0, 5)
+# slippage = np.log10(slippage)
+plt.plot(delA, np.log10(slippage))
+plt.xlim(0,30)
+plt.ylim(0, 10)
 plt.xlabel('Amount of A being exchanged for B')
 plt.ylabel('Price Slippage of Expected Price of B versus Actual (%)')
 plt.show()
-
 
 #calculating percentage change between price slippages
 num = (np.array([d.slippage(i) for i in range(10)]) - np.array([b.slippage(i) for i in range(10)]))
@@ -218,3 +237,5 @@ print(num)
 perc = num/np.array([b.slippage(i) for i in range(10)])
 print(perc[2:])
 print(np.average(perc))
+
+
