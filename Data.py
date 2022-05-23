@@ -147,15 +147,13 @@ and while the quantity of y decreases.
 '''
 slippage =np.array([d.slippage(i) for i in range(100)])
 price = np.array([d.price(i) for i in range(100)])
-delA = [i for i in range(100)]
 price = np.log10(price)
 slippage = np.log10(slippage)
 
-plt.plot(slippage, price)
-#plt.xlim(0,10)
-#plt.ylim(0, 5)
+plt.plot(price, slippage)
 plt.xlabel('Price Y in terms of A, log10')
 plt.ylabel('Slippage, log10')
+plt.ylim(0, 1.75)
 plt.show()
 
 
@@ -248,7 +246,7 @@ difference = [(b.quantity(i).x[0]-b.quantity(i-1).x[0]) for i in range(100)]
 delA = [i for i in range(100)]
 plt.plot(delA, difference)
 plt.ylim([0, 2])
-plt.xlim([0, 11])
+# plt.xlim([0, 11])
 plt.xlabel('Amount of A added to LP')
 plt.ylabel('Amount of B Received per 1 Unit Increase in A')
 plt.show()
@@ -266,18 +264,11 @@ quant = [b.quantity(i).x[0] for i in range(100)]
 slippage = np.array([b.slippage(i)for i in range(100)])
 # slippage = np.log10(slippage)
 plt.plot(delA, np.log10(slippage))
-plt.xlim(0,30)
-plt.ylim(0, 10)
+# plt.xlim(0,30)
+# plt.ylim(0, 10)
 plt.xlabel('Amount of A being exchanged for B')
 plt.ylabel('Price Slippage of Expected Price of B versus Actual (%)')
 plt.show()
-
-#calculating percentage change between price slippages
-num = (np.array([d.slippage(i) for i in range(10)]) - np.array([b.slippage(i) for i in range(10)]))
-print(num)
-perc = num/np.array([b.slippage(i) for i in range(10)])
-print(perc[2:])
-print(np.average(perc))
 
 
 outer = np.linspace(0, 101, 50)
