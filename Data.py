@@ -90,7 +90,7 @@ class data_ay():
     #     print('More liquidity must be locked in asset Y before swap can be executed.')
 
 
-d = data_ay(.2, .8, 10, 10, 10)
+d = data_ay(.2, .8, 100, 100, 100)
 UStart_ay = d.Ufun(d.a, d.b, d.y)
 UStart_ay
 
@@ -116,8 +116,8 @@ delA = [i for i in range(100)]
 difference = [(d.quantity(i).x[0]-d.quantity(i-1).x[0]) for i in range(100)]
 
 plt.plot(delA, difference)
-plt.ylim([0, 1])
-plt.xlim([0, 12])
+#plt.ylim([0, 1])
+#plt.xlim([0, 12])
 plt.xlabel('Amount of A added to LP')
 plt.ylabel('Incremental Amount of Y Received')
 plt.show()
@@ -131,8 +131,8 @@ slippage = ([d.slippage(i) for i in range(100)])
 slippage = np.log10(np.array(slippage))
 
 plt.plot(delA, slippage)
-plt.xlim(0,35)
-plt.ylim(0, 2.2)
+#plt.xlim(0,35)
+#plt.ylim(0, 2.2)
 plt.xlabel('Amount of A being exchanged for Y')
 plt.ylabel('Price Slippage of Expected Price of Y versus Actual (%)')
 plt.show()
@@ -152,8 +152,8 @@ price = np.log10(price)
 slippage = np.log10(slippage)
 
 plt.plot(slippage, price)
-plt.xlim(0,10)
-plt.ylim(0, 5)
+#plt.xlim(0,10)
+#plt.ylim(0, 5)
 plt.xlabel('Price Y in terms of A, log10')
 plt.ylabel('Slippage, log10')
 plt.show()
@@ -192,7 +192,7 @@ class data_by():
 
 
 
-c = data_by(.1, .8, 10, 10, 10)
+c = data_by(.2, .8, 100, 100, 100)
 UStart_by = c.Ufun(c.a, c.b, c.y)
 
 
@@ -229,7 +229,7 @@ class data_ab():
 
 
 
-b = data_ab(.1, .8, 10, 10, 10)
+b = data_ab(.2, .8, 100, 100, 100)
 UStart_ab = b.Ufun(b.a, b.b, b.y)
 UStart_ab
 
@@ -280,11 +280,11 @@ print(perc[2:])
 print(np.average(perc))
 
 
-outer = np.linspace(1.001, 11, 100)
-inner = np.linspace(1.001, 11, 100)
+outer = np.linspace(0, 101, 50)
+inner = np.linspace(0, 101, 50)
 
-discrete_out = [i for i in range(1, 11)]
-discrete_in = [i for i in range(1, 11)]
+discrete_out = [i for i in range(0, 101)]
+discrete_in = [i for i in range(0, 101)]
 
 ay_slippage = [d.slippage(i) for i in discrete_out]
 by_slippage = [c.slippage(i) for i in discrete_out]
@@ -298,12 +298,12 @@ plt.plot(outer, np.log10(ay_slippage), 'r', label = 'A to Y')
 plt.plot(outer, np.log10(by_slippage), 'k:', label = 'B to Y')
 plt.plot(inner, np.log10(ab_slippage), label = 'A to B')
 plt.plot(inner, np.log10(cp_slippage), label = 'CPMM')
-plt.xlim(0, 10)
+plt.xlim(0, 100)
 plt.ylim(0, 2.2)
-plt.xticks([0] + discrete_out)
+# plt.xticks([0] + discrete_out)
 plt.legend()
-plt.title('Comparison of Price Slippage between Three-Asset NAMM \nand CPMM')
-plt.xlabel('Amount of {A, B, A, A} being exchanged for {Y, Y, B, B}, respectively')
+plt.title('Comparison of Price Slippage Paths between \nThree-Asset NAMM and CPMM')
+plt.xlabel('Amount of Asset Traded in Exchange')
 plt.ylabel('Price Slippage %, log10')
 plt.show()
 
@@ -334,7 +334,7 @@ class data_CPMM():
     def slippage(self, delA):
         return ((self.price(delA) / self.price(1)) - 1) * 100
 
-cp = data_CPMM(10, 10)
+cp = data_CPMM(100, 100)
 UStart_cp = cp.Ufun(cp.a, cp.b)
 UStart_cp
 
