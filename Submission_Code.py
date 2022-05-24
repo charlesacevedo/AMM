@@ -167,6 +167,7 @@ plt.show()
 plt.savefig('SlippagePaths.png')
 
 
+
 '''
 AY Swap graphs
 '''
@@ -183,7 +184,6 @@ plt.show()
 
 
 
-
 #plot displaying AY swaps price slippage as a function of price
 slippage =np.array([d.slippage(i) for i in range(100)])
 price = np.array([d.price(i) for i in range(100)])
@@ -196,6 +196,7 @@ plt.ylabel('Slippage, log10')
 plt.ylim(0, 1.75)
 plt.title('AY Price Sllippage as a Function of Price')
 plt.show()
+
 
 
 '''
@@ -260,7 +261,6 @@ plt.show()
 
 
 
-
 '''
 Conceptual Model graphs
 '''
@@ -279,18 +279,20 @@ plt.themes
 plt.show()
 
 
+
 #Quantity of Y vs Price of Y
 difference = np.array([(d.quantity(i).x[0]-d.quantity(i-1).x[0]) for i in range(100)]) ** 2
 price = np.array([d.price(i) for i in range(100)])
 price = (price) **2
 
 plt.plot(difference, price)
-plt.xlabel('Incremental Amount of Y in LP)
+plt.xlabel('Incremental Amount of Y in LP')
 plt.ylabel('Price of Y in Terms of A')
 # plt.ylim(0, 1.75)
 plt.title('Quantity of Y vs. Price of Y')
 plt.xticks(0,100)
 plt.show()
+
 
 
 #Quantity of A vs. price slippage
@@ -304,6 +306,7 @@ plt.ylabel('Slippage, log10')
 plt.title('Quantity of A in LP vs. Price Slippage of Y')
 plt.themes
 plt.show()
+
 
 
 #Price of y versus price slippage
@@ -324,6 +327,7 @@ plt.show()
 '''
 Exporting data
 '''
+
 
 
 dict1 = {
