@@ -2,6 +2,7 @@ import numpy as np
 import scipy.optimize as opt
 import matplotlib.pyplot as plt
 import pyplot_themes as themes
+import pandas as pd
 themes.theme_ggplot2(figsize=[10, 5])
 
 
@@ -256,3 +257,79 @@ plt.xlabel('Price of B in terms of A, log10')
 plt.ylabel('Slippage, log10')
 plt.title('CPMM Price Slippage as a Function of Price')
 plt.show()
+
+
+
+
+'''
+Conceptual Model graphs
+'''
+
+
+
+#A Swaps for Y
+delA = [i for i in range(100)]
+difference = [(d.quantity(i).x[0]-d.quantity(i-1).x[0]) for i in range(100)]
+
+plt.plot(delA, difference)
+plt.xlabel('Amount of A added to LP')
+plt.ylabel('Incremental Amount of Y Received')
+plt.title('AY Swap Return')
+plt.themes
+plt.show()
+
+
+#Quantity of Y vs Price of Y
+difference = np.array([(d.quantity(i).x[0]-d.quantity(i-1).x[0]) for i in range(100)]) ** 2
+price = np.array([d.price(i) for i in range(100)])
+price = (price) **2
+
+plt.plot(difference, price)
+plt.xlabel('Incremental Amount of Y in LP)
+plt.ylabel('Price of Y in Terms of A')
+# plt.ylim(0, 1.75)
+plt.title('Quantity of Y vs. Price of Y')
+plt.xticks(0,100)
+plt.show()
+
+
+#Quantity of A vs. price slippage
+slippage =np.array([d.slippage(i) for i in range(100)])
+delA = [i for i in range(100)]
+slippage = np.log10(slippage)
+
+plt.plot(delA, slippage)
+plt.xlabel('Amount of A added to LP')
+plt.ylabel('Slippage, log10')
+plt.title('Quantity of A in LP vs. Price Slippage of Y')
+plt.themes
+plt.show()
+
+
+#Price of y versus price slippage
+price = np.array([d.price(i) for i in range(100)])
+slippage =np.array([d.slippage(i) for i in range(100)])
+slippage = np.log10(slippage)
+
+plt.plot(price, slippage)
+plt.xlabel('Price of Y in Terms of A')
+plt.ylim(0, 1.8)
+plt.ylabel('Slippage, log10')
+plt.title('Price vs. Price Slippage of Y')
+plt.themes
+plt.show()
+
+
+
+'''
+Exporting data
+'''
+
+
+dict1 = {
+    'delA' : [i for i in range(100)], 'Quantity_Returned_Y' : [d.quantity(i).x[0] for i in range(100)], 'Incremental_Y' : [(d.quantity(i).x[0]-d.quantity(i-1).x[0]) for i in range(100)], 'Price_Y' : [d.price(i) for i in range(100)], 'Slippage_Y' : [d.slippage(i) for i in range(100)], 'Quantity_Returned_B' : [b.quantity(i).x[0] for i in range(100)], 'Incremental_B' : [(b.quantity(i).x[0]-b.quantity(i-1).x[0]) for i in range(100)], 'Price_B' : [b.price(i) for i in range(100)], 'Slippage_B' : [b.slippage(i) for i in range(100)], 'Quantity__Returned_CPMM' : [cp.quantity(i).x[0] for i in range(100)], 'Incremental_CPMM' : [(cp.quantity(i).x[0]-cp.quantity(i-1).x[0]) for i in range(100)], 'Price_CPMM' : [cp.price(i) for i in range(100)], 'Slippage_CPMM' : [cp.slippage(i) for i in range(100)]
+}
+print(dict1)
+df = pd.DataFrame.from_dict(dict1, orient='index')
+df = df.transpose()
+df.to_csv("SimulationData.csv")
