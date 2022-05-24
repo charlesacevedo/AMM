@@ -1,7 +1,8 @@
 import numpy as np
 import scipy.optimize as opt
 import matplotlib.pyplot as plt
-
+import pyplot_themes as themes
+themes.theme_ggplot2(figsize=[10, 5])
 
 
 class data_ay():
@@ -130,6 +131,12 @@ UStart_cp
 
 
 
+'''
+Figure Section
+'''
+
+
+
 #Graph Displaying price slippage paths for NAMM swaps and CPMM swaps
 outer = np.linspace(0, 101, 50)
 inner = np.linspace(0, 101, 50)
@@ -145,10 +152,10 @@ ay_slippage = [d.slippage(i) for i in outer]
 by_slippage = [c.slippage(i) for i in outer]
 ab_slippage = [b.slippage(i) for i in inner]
 cp_slippage = [cp.slippage(i) for i in inner]
+plt.plot(inner, np.log10(cp_slippage), label = 'CPMM')
 plt.plot(outer, np.log10(ay_slippage), 'r', label = 'A to Y')
 plt.plot(outer, np.log10(by_slippage), 'k:', label = 'B to Y')
 plt.plot(inner, np.log10(ab_slippage), label = 'A to B')
-plt.plot(inner, np.log10(cp_slippage), label = 'CPMM')
 plt.xlim(0, 100)
 plt.ylim(0, 2.2)
 plt.legend()
@@ -156,6 +163,7 @@ plt.title('Comparison of Price Slippage Paths between \nThree-Asset NAMM and CPM
 plt.xlabel('Amount of Asset Traded in Exchange')
 plt.ylabel('Price Slippage %, log10')
 plt.show()
+plt.savefig('SlippagePaths.png')
 
 
 '''
@@ -169,7 +177,9 @@ plt.plot(delA, difference)
 plt.xlabel('Amount of A added to LP')
 plt.ylabel('Incremental Amount of Y Received')
 plt.title('AY Swap Return')
+plt.themes
 plt.show()
+
 
 
 
@@ -227,6 +237,7 @@ delA = [i for i in range(100)]
 
 plt.plot(delA, difference)
 plt.ylim([0, 2])
+plt.xlim([0,100])
 plt.xlabel('Amount of A added to LP')
 plt.ylabel('Amount of B Received per 1 Unit Increase in A')
 plt.title('CPMM Swap Return')
