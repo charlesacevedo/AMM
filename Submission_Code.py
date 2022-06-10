@@ -178,6 +178,7 @@ difference = [(d.quantity(i).x[0]-d.quantity(i-1).x[0]) for i in range(100)]
 plt.plot(delA, difference)
 plt.xlabel('Amount of A added to LP')
 plt.ylabel('Incremental Amount of Y Received')
+plt.ylim(0,1)
 plt.title('AY Swap Return')
 plt.themes
 plt.show()
@@ -190,11 +191,11 @@ price = np.array([d.price(i) for i in range(100)])
 price = np.log10(price)
 slippage = np.log10(slippage)
 
-plt.plot(price, slippage)
+plt.plot(delA, slippage)
 plt.xlabel('Price of Y in terms of A, log10')
 plt.ylabel('Slippage, log10')
 plt.ylim(0, 1.75)
-plt.title('AY Price Sllippage as a Function of Price')
+plt.title('AY Price Slippage vs. Quantity of A')
 plt.show()
 
 
@@ -207,10 +208,9 @@ difference = [(b.quantity(i).x[0]-b.quantity(i-1).x[0]) for i in range(100)]
 delA = [i for i in range(100)]
 
 plt.plot(delA, difference)
-plt.ylim([0, 2])
-# plt.xlim([0, 11])
+plt.ylim([0,1.2])
 plt.xlabel('Amount of A added to LP')
-plt.ylabel('Amount of B Received per 1 Unit Increase in A')
+plt.ylabel('Incremental Amount of B Received')
 plt.title('AB Swap Return')
 plt.show()
 
@@ -222,10 +222,11 @@ price = np.array([b.price(i) for i in range(100)])
 price = np.log10(price)
 slippage = np.log10(slippage)
 
-plt.plot(price, slippage)
+plt.plot(delA, slippage)
 plt.xlabel('Price of B in terms of A, log10')
+plt.ylim(0, 2)
 plt.ylabel('Slippage, log10')
-plt.title('AB Price Slippage as a Function of Price')
+plt.title('AB Price Slippage vs. Quantity of A')
 plt.show()
 
 
@@ -238,10 +239,11 @@ difference = [(cp.quantity(i).x[0]-cp.quantity(i-1).x[0]) for i in range(100)]
 delA = [i for i in range(100)]
 
 plt.plot(delA, difference)
-plt.ylim([0, 2])
+# plt.ylim([0, 2])
 plt.xlim([0,100])
+plt.ylim(0,1)
 plt.xlabel('Amount of A added to LP')
-plt.ylabel('Amount of B Received per 1 Unit Increase in A')
+plt.ylabel('Incremental Amount of B Received')
 plt.title('CPMM Swap Return')
 plt.show()
 
@@ -253,10 +255,10 @@ price = np.array([cp.price(i) for i in range(100)])
 price = np.log10(price)
 slippage = np.log10(slippage)
 
-plt.plot(price, slippage)
+plt.plot(delA, slippage)
 plt.xlabel('Price of B in terms of A, log10')
 plt.ylabel('Slippage, log10')
-plt.title('CPMM Price Slippage as a Function of Price')
+plt.title('CPMM Price Slippage vs. Quantity of A')
 plt.show()
 
 
@@ -281,12 +283,12 @@ plt.show()
 
 
 #Quantity of Y vs Price of Y
-difference = np.array([(d.quantity(i).x[0]-d.quantity(i-1).x[0]) for i in range(100)]) ** 2
+difference = np.array([(d.quantity(i).x[0]-d.quantity(i-1).x[0]) for i in range(100)]) 
 price = np.array([d.price(i) for i in range(100)])
-price = (price) **2
+price = (price) 
 
-plt.plot(difference, price)
-plt.xlabel('Incremental Amount of Y in LP')
+plt.plot(price, difference)
+plt.xlabel('Incremental Amount of Y Returned in LP')
 plt.ylabel('Price of Y in Terms of A')
 # plt.ylim(0, 1.75)
 plt.title('Quantity of Y vs. Price of Y')

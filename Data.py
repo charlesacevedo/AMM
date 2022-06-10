@@ -67,6 +67,10 @@ class data_ay():
 
     def slippage(self, delA):
         return (((self.price(delA) / self.price(1)) - 1) * 100)
+    
+    def mrs(self, delA, b, y):
+        delY = opt.root(lambda: y: ((((delA ** (1 - self.sigma) + b ** (1 - self.sigma))**(1/(1 - self.sigma)))/y) ** -self.eta) * ((delA)/(delA ** (1 - self.sigma) + b ** (1 - self.sigma))**(1/(1-self.sigma)))** -self.sigma)
+       
 
 
 
@@ -91,6 +95,8 @@ class data_ay():
 
 
 d = data_ay(.2, .8, 100, 100, 100)
+mrs = d.mrs(d.a, d.b, d.y)
+print(mrs)
 UStart_ay = d.Ufun(d.a, d.b, d.y)
 UStart_ay
 
